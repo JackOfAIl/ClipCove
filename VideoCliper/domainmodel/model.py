@@ -22,6 +22,7 @@ class Video:
     def video_url(self):
         return self.video_url
 
+
     @property
     def website(self):
         return self.website
