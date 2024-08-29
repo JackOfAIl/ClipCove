@@ -78,6 +78,7 @@ class Playlist:
         self._playlist: dict[str, Video] = dict()
         self._size = 0
         self._name = name
+        self.date_publised: datetime.datetime = datetime.datetime.now()
         self._cover_img_url = cover_img_url
         self.total_duration = 0
         self._playlist_id = id(self)
@@ -138,7 +139,17 @@ class Playlist:
                f" Size: {self._size}\n" f" Description: {self._description}\n" \
                f"Playlist: {self.playlist}\n" \
 
+    def __lt__(self, other) -> bool:
+        return self.date_publised < other.date_publised
 
 
 
+class RecentlyDownloaded:
+
+    def __init__(self, video:Video):
+        self._video = video
+        self._video.video_name = Video.video_name
+        self._video.total_duration = Video.video_duration
+        self._video.total_number_of_videos = Video.total_number_of_videos
+        
 
