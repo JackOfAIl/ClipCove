@@ -1,4 +1,5 @@
 import typing
+import datetime
 
 
 class Video:
@@ -10,9 +11,11 @@ class Video:
         self._video_url = video_url
         self._website = website
         self._video_duration: int = 0
+        self._date_added: datetime.datetime = datetime.datetime.now()
         self._video_id = id(self)
         self.in_playlist: list[Playlist] = []
         self.video_name: str = ""
+
 
     @property
     def video_id(self):
@@ -22,7 +25,6 @@ class Video:
     def video_url(self):
         return self.video_url
 
-
     @property
     def website(self):
         return self.website
@@ -31,9 +33,31 @@ class Video:
     def video_duration(self):
         return self.video_duration
 
+    @property
+    def date_added(self):
+        return self._date_added
+
+    @property
+    def video_name(self):
+        return self.video_name
+
+    @video_name.setter
+    def video_name(self, name:str):
+        self._video_name = name
+
+    def __lt__(self, other):
+        return self.video_duration < other.video_duration
+
     def __hash__(self):
         return hash((self.video_url, self.website, self.video_id))
 
+    def __eq__(self, other):
+        return (self.video_url == other.video_url
+                and self.website == other.website
+                and self.video_id == other.video_id)
+
+    def __str__(self):
+        return f"{self.video_url} {self.website} {self.video_duration} {self.date_added}"
 
 
 
