@@ -3,9 +3,10 @@ import datetime
 
 
 class Video:
-    #Static variable used to keep track of the total number
-    #of videos the user has downloaded.
+    #Static variable used to keep track of the total number of videos the user has downloaded.
     total_number_of_videos:str = 0
+    #Unique ID for video_id var.
+    unique_video_id: int = 0
 
     def __init__(self, video_url:str, website:str):
         self._video_url = video_url
@@ -13,7 +14,7 @@ class Video:
         self._website = website
         self._video_duration: int = 0
         self._date_added: datetime.datetime = datetime.datetime.now()
-        self._video_id = id(self)
+        self._video_id = Video.unique_video_id
         self.in_playlist: list[Playlist] = []
         self.video_name: str = ""
 
@@ -55,7 +56,7 @@ class Video:
         self._video_img = img
 
     def __lt__(self, other) -> bool:
-        return self.video_duration < other.video_duration
+        return self.date_added < other.date_added
 
     def __hash__(self) -> int:
         return hash((self.video_url, self.website, self.video_id))
@@ -75,7 +76,7 @@ class Playlist:
     number_of_playlists: int = 0
 
     def __init__(self, name:str, cover_img_url:str, description:str):
-        self._playlist: dict[str, Video] = dict()
+        self._playlist: dict[int, Video] = dict()
         self._size = 0
         self._name = name
         self.date_publised: datetime.datetime = datetime.datetime.now()
@@ -117,9 +118,9 @@ class Playlist:
     def description(self, description:str):
         self._description = description
 
-    def add_video_to_playlist(self, video_obj:Video):
-        if isinstance(video_obj, Video):
-            self.playlist.append(video_obj)
+    def add_video_to_playlist(self, video: Video):
+        if isinstance(video, Video):
+            self.playlist[video.video_id] = video
         else:
             raise TypeError ("Could not add Video to Playlist")
 
@@ -145,11 +146,35 @@ class Playlist:
 
 
 class RecentlyDownloaded:
+    #This list contains the recently downloaded videos.
+    recently_downloaded_list: list[Video] = list()
 
     def __init__(self, video:Video):
         self._video = video
         self._video.video_name = Video.video_name
         self._video.total_duration = Video.video_duration
-        self._video.total_number_of_videos = Video.total_number_of_videos
+        self._date_downloaded: datetime.datetime = datetime.datetime.now()
+        RecentlyDownloaded.recently_downloaded_list.append(video)
+        RecentlyDownloaded.recently_downloaded_list.sort()
+
+    @property
+    def video(self) -> Video:
+        return self._video
+
+    @property
+    def video_name(self) -> str:
+        return self._video.video_name
+
+    @property
+    def date_downloaded(self) -> datetime.datetime:
+        return self.date_downloaded
+
+
+
+
+
+
+
+
         
 
