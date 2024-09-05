@@ -145,32 +145,6 @@ class Playlist:
 
 
 
-class RecentlyDownloaded:
-    #This list contains the recently downloaded videos.
-    recently_downloaded_list: list[Video] = list()
-
-    def __init__(self, video:Video):
-        self._video = video
-        self._video.video_name = Video.video_name
-        self._video.total_duration = Video.video_duration
-        self._date_downloaded: datetime.datetime = datetime.datetime.now()
-        RecentlyDownloaded.recently_downloaded_list.append(video)
-        RecentlyDownloaded.recently_downloaded_list.sort()
-
-    @property
-    def video(self) -> Video:
-        return self._video
-
-    @property
-    def video_name(self) -> str:
-        return self._video.video_name
-
-    @property
-    def date_downloaded(self) -> datetime.datetime:
-        return self.date_downloaded
-
-
-
 
 
 
